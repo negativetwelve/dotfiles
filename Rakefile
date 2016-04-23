@@ -1,8 +1,6 @@
 require "rake"
 require "fileutils"
 
-is_osx? = RUBY_PLATFORM.downcase.include?("darwin")
-
 desc "Installs dotfiles with default installation"
 task :install do
   puts
@@ -12,7 +10,6 @@ task :install do
   puts
 
   install_homebrew if is_osx?
-
 end
 
 def install_homebrew
@@ -36,4 +33,15 @@ def install_homebrew
   puts "======================================================"
   run %{brew install zsh ctags git hub tmux reattach-to-user-namespace the_silver_searcher}
   puts
+end
+
+private
+
+def run(command)
+  puts "[Running] #{command}"
+  `#{command}` unless ENV['DEBUG']
+end
+
+def is_osx?
+  RUBY_PLATFORM.downcase.include?("darwin")
 end
